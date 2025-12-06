@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOLO Smart Hub</title>
+    
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="raphael.min.js"></script>
+    <script src="justgage.min.js"></script>
+    
+    </head>
+<body>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="brand">
+                <span>🚀 YOLO HUB</span>
+            </div>
+            
+            <nav class="nav-links">
+                <div class="nav-item active" onclick="showSection('home', event)">
+                    <span>📊 Dashboard</span>
+                </div>
+                <div class="nav-item" onclick="showSection('device', event)">
+                    <span>⚡ Control</span>
+                </div>
+                <div class="nav-item" onclick="showSection('settings', event)">
+                    <span>⚙️ Config</span>
+                </div>
+            </nav>
+
+            <div class="status-indicator">
+                <div id="connectionStatus" class="status-dot disconnected"></div>
+                <span id="statusText">Disconnected</span>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            
+            <section id="home" class="view-section fade-in">
+                <div class="header">
+                    <h1>Environment</h1>
+                    <p class="subtitle">Real-time sensor metrics</p>
+                </div>
+
+                <div class="sensor-grid">
+                    <div class="sensor-card temp-card">
+                        <div class="card-header">
+                            <span>🌡️ Temperature</span>
+                        </div>
+                        <div id="gauge_temp" class="gauge-render"></div>
+                    </div>
+
+                    <div class="sensor-card humi-card">
+                        <div class="card-header">
+                            <span>💧 Humidity</span>
+                        </div>
+                        <div id="gauge_humi" class="gauge-render"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="device" class="view-section" style="display:none;">
+                <div class="header">
+                    <h1>Smart Controls</h1>
+                    <p class="subtitle">Manage connected relays</p>
+                </div>
+
+                <div id="relayContainer" class="devices-grid">
+                    </div>
+
+                <button class="fab-add" onclick="openAddRelayDialog()">
+                    +
+                </button>
+            </section>
+
+            <section id="settings" class="view-section" style="display:none;">
+                <div class="header">
+                    <h1>System Settings</h1>
+                    <p class="subtitle">Network & MQTT Configuration</p>
+                </div>
+
+                <div class="settings-wrapper">
+                    <form id="settingsForm" class="styled-form">
+                        <div class="form-group">
+                            <label>Wi-Fi Network</label>
+                            <input type="text" id="ssid" placeholder="SSID">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="password" placeholder="••••••••">
+                        </div>
+                        <div class="form-divider"></div>
+                        <div class="form-group">
+                            <label>Core IoT Token</label>
+                            <input type="text" id="token" placeholder="Token">
+                        </div>
+                        <div class="form-group two-col">
+                            <input type="text" id="server" placeholder="MQTT Server">
+                            <input type="text" id="port" placeholder="Port">
+                        </div>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="addRelayDialog" class="modal-backdrop" style="display:none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Add Device</h3>
+                <span class="close-btn" onclick="closeAddRelayDialog()" style="cursor:pointer;">✖</span>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="relayName" class="modal-input" placeholder="Device Name (e.g. Fan)">
+                <input type="number" id="relayGPIO" class="modal-input" placeholder="GPIO Pin (e.g. 2)">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-ghost" onclick="closeAddRelayDialog()">Cancel</button>
+                <button class="btn-primary" onclick="saveRelay()">Add Device</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
